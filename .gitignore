@@ -1,0 +1,17 @@
+# Your board and settings (personal; never commit these)
+data.json
+config.json
+requests.json
+collected.json
+backups/
+
+# Logs from the launcher scripts
+launchers/logs/
+
+# A firewall's CA certificate, if you saved one here
+ca.pem
+
+# Temporary files
+*.tmp
+*.log
+node_modules/

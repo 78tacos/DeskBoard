@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Desk Board: user guide</title><style>
+  :root { color-scheme: light; }
+  body { margin: 0; background: #ffffff; color: #1b1b1b; font: 15px/1.55 "Segoe UI", Calibri, Arial, sans-serif; }
+  main, nav, footer { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  nav { padding-top: 14px; padding-bottom: 10px; font-size: 13px; border-bottom: 1px solid #d0d0d0; }
+  nav a { margin-right: 14px; }
+  main { padding-top: 10px; padding-bottom: 40px; }
+  h1 { font-size: 26px; margin: 22px 0 8px; }
+  h2 { font-size: 20px; margin: 28px 0 8px; }
+  h3 { font-size: 16px; margin: 20px 0 6px; }
+  p, ul, ol, table, pre { margin: 0 0 12px; }
+  li { margin: 2px 0; }
+  a { color: #0b5cad; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; background: #f1f1f1; padding: 1px 4px; border-radius: 3px; }
+  pre { background: #f6f6f6; border: 1px solid #dcdcdc; border-radius: 4px; padding: 10px 12px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border: 1px solid #c4c4c4; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #efefef; }
+  hr { border: 0; border-top: 1px solid #d0d0d0; margin: 24px 0; }
+  footer { color: #666; font-size: 12px; padding-bottom: 24px; }
+  section.article { page-break-before: always; }
+  section.article:first-of-type { page-break-before: auto; }
+  @media print { nav { display: none; } }
+</style></head><body><nav><a href="index.html">All articles</a><a href="01-overview-and-quick-start.html">overview and quick start</a><strong>user guide</strong> <a href="03-setup-and-troubleshooting.html">setup, operation and troubleshooting</a><a href="04-reference.html">reference</a><a href="05-using-desk-board-with-claude.html">Using Desk Board with Claude</a><a href="all.html">Everything on one page</a></nav><main>
+<h1 id="desk-board-user-guide">Desk Board: user guide</h1>
+<p>Last updated 2026-10-15. See <a href="01-overview-and-quick-start.html">the overview</a> for what Desk Board is and how to start it.</p>
+<h2 id="the-window">The window</h2>
+<p>Across the top: the title, a <strong>Last 7 days / Everything</strong> switch, the search box, the AI buttons (once an AI is connected), and <strong>Connect AI</strong> (or the name of the connected AI). Under that are two tabs, <strong>Board</strong> and <strong>Launcher</strong>.</p>
+<p>On the Board tab, from top to bottom: the summary strip, the week strip, the panels, and a row with the Checklists, Scripts and Claude chats panels. Each panel has a small arrow next to its title that collapses it.</p>
+<p>Changes save as you make them. Open windows pick up changes made elsewhere within a few seconds, including changes Claude makes.</p>
+<h2 id="tasks">Tasks</h2>
+<p><strong>Add a task:</strong> type in the Add a task box (shortcut <strong>N</strong>). Optional fields are due date, priority (Normal, High, Low), repeat, project, and a link or file path. Press Add or Enter.</p>
+<p><strong>Complete a task:</strong> click its box. Completed tasks move to Recently done at the bottom of the panel. Click the box again to reopen one.</p>
+<p><strong>Groups:</strong> Overdue (red), Today, Upcoming, No date. Inside a group, high priority comes first, then earliest due date.</p>
+<p><strong>Repeating tasks:</strong> choose Daily, Weekdays, Weekly or Monthly. When you complete one, the next copy is created automatically with the next due date, and a message offers Undo. If the task was already overdue, the next date is the first one that is today or later.</p>
+<p><strong>Links on tasks:</strong> a web address shows Open link. A file or folder path shows Show in folder, which opens Explorer.</p>
+<p><strong>Today only:</strong> the <strong>Today only</strong> button (shortcut <strong>T</strong>) shows just overdue tasks, tasks due today, and high priority tasks.</p>
+<p><strong>Delete:</strong> the <strong>×</strong> on a task. A message offers Undo for a few seconds.</p>
+<p><strong>Later tasks:</strong> with the 7-day view on, a task counts as current if it is overdue, due within the next 7 days, high priority, or was added this week. Other open tasks are folded under <strong>Show N later tasks</strong>. Nothing is deleted.</p>
+<h2 id="summary-strip-and-week-strip">Summary strip and week strip</h2>
+<p>The tiles are filters. <strong>Overdue</strong> shows only overdue tasks. <strong>Active projects</strong> shows only active projects. <strong>Needs attention</strong> scrolls to that panel. <strong>Done, last 7 days</strong> shows a small bar chart, one bar per day.</p>
+<p>The week strip has one button per day (today and the next six) with the number of tasks due, and an <strong>Overdue</strong> button. Click a day to filter tasks to that date. Click it again to clear.</p>
+<h2 id="projects">Projects</h2>
+<p>Each project card shows its status, folder, next action, progress, and counts of chats and scripts.</p>
+<ul><li><strong>Status</strong> menu: Active, Waiting, Blocked, Unsorted, Done. Blocked projects sort first.</li><li><strong>Next action:</strong> click the line under the name and type. It saves when you leave the box.</li><li><strong>Progress bar:</strong> tasks linked to the project that are done, out of all of them. Checklist progress shows as <code>checklists 2/7</code>.</li><li><strong>Touched Nd ago:</strong> the latest of: a change to the project, a task added or finished, a chat in its folder, or a script changed in its folder.</li><li><strong>Stale:</strong> an Active project not touched for more than 14 days.</li><li><strong>Notes:</strong> open Notes on the card for free text. A dot shows when notes exist.</li><li><strong>Open folder</strong> opens the project's folder in Explorer. <strong>VS Code</strong> opens it in VS Code. Both appear only when the project has a folder.</li><li><strong>Add a project:</strong> use the form at the top of the panel. The folder is relative to your user folder (for example <code>Development\MyProject</code>) or a full path.</li></ul>
+<h2 id="focus-mode-and-checklists">Focus mode and checklists</h2>
+<p>Click <strong>Focus</strong> on a project card (or the project's name anywhere) to focus on it. A panel appears at the top with the project's name, status, next action, counts, and its checklists. The Tasks, Projects, Scripts and Claude chats panels narrow to that project, and older items are shown too. The filter bar shows <strong>Focus: Sorto</strong> (or the project name). Click <strong>Exit focus</strong> to return.</p>
+<p>If your latest Claude chat in a project was in the last 3 hours, the header suggests <strong>Working on Sorto? Focus</strong>.</p>
+<p><strong>Checklists</strong> hold steps, tests, or things to verify.</p>
+<ul><li><strong>New checklist:</strong> give it a title and, optionally, items one per line. Lines may start with <code>- [ ]</code>, <code>- [x]</code>, <code>-</code> or <code>1.</code>; the marks are understood and <code>[x]</code> starts the item ticked.</li><li><strong>Tick an item:</strong> click its box. Click again to untick.</li><li><strong>Add an item:</strong> type in the box at the bottom and press Enter. Pasting several lines adds them all.</li><li><strong>Hide done:</strong> hides ticked items on that checklist so only the remaining work shows. It becomes Show done.</li><li><strong>Remove an item</strong> with its <strong>×</strong>, or the whole checklist with the <strong>×</strong> at the top right. Both offer Undo.</li><li>Claude can add checklists to a project too. They are marked with a Claude badge.</li></ul>
+<p>When no project is focused, the Checklists panel in the lower row lists the recently touched checklists from all projects.</p>
+<h2 id="needs-attention">Needs attention</h2>
+<p>Things waiting on you. Add one with a title and a severity (Normal or High). High items sort first. <strong>Resolve</strong> removes an item from the list (it is kept, marked resolved). Items always show, whatever their age. Claude adds items here when something needs your decision.</p>
+<h2 id="documents-and-artifacts">Documents and artifacts</h2>
+<p>Links to things you made in Claude or elsewhere. Add a title, a web address, and a type (Artifact, Document, Other). Links are grouped by type, newest first. The Launcher tab lists the artifacts and documents too.</p>
+<h2 id="weekly-reviews">Weekly reviews</h2>
+<p>Click <strong>Weekly review</strong> (needs an AI connected). The AI writes a short summary of the last 7 days from your board: what you finished, what slipped, where the time went (using chats and scripts), and suggestions for next week. Each review is saved in this panel. The newest is open; older ones are folded.</p>
+<h2 id="scripts">Scripts</h2>
+<p>This panel lists script files found on this PC: PowerShell, Python, batch, shell and VBScript files. It includes every script Claude wrote in a chat, even in folders it would not normally scan.</p>
+<ul><li>Each row shows the language, name, a one-line description taken from the script's first comment, its project, date and size.</li><li>A <strong>Claude</strong> badge marks scripts Claude wrote. Hover it to see which chat.</li><li><strong>Show</strong> opens Explorer on the file. <strong>Copy path</strong> copies the full path.</li><li><strong>Made by Claude</strong> shows only those. <strong>Show missing</strong> includes scripts that no longer exist on disk (for example from deleted scratch folders). <strong>Rescan</strong> scans again now; otherwise the scan repeats every 5 minutes.</li></ul>
+<h2 id="claude-chats">Claude chats</h2>
+<p>Conversations from Claude Desktop and Claude Code on this PC, newest first, with a snippet of your last message, how long ago, and how many messages. Each chat is matched to a project by the folder it ran in.</p>
+<p>Use the dropdown on a row to change a chat's project. Chats started with no folder show <strong>No folder</strong> until you pick one. Chats from claude.ai in a web browser are not on this PC and are not listed.</p>
+<h2 id="last-7-days-and-everything">Last 7 days and Everything</h2>
+<p>The <strong>Last 7 days / Everything</strong> switch at the top controls every panel at once. In Last 7 days (the default), each panel shows what was worked on this week and folds the rest under a button such as <strong>Show 23 older scripts</strong>. Click the button to expand that one panel and click it again to fold it. <strong>Everything</strong> shows it all.</p>
+<p>Searching or focusing a project always shows everything that matches. The arrow next to a panel title collapses the whole panel. Your choices are remembered between sessions.</p>
+<p>What counts as "this week" for each panel:</p>
+<table><thead><tr><th>Panel</th><th>Counts as this week</th></tr></thead><tbody><tr><td>Tasks</td><td>Overdue, due within 7 days, high priority, or added this week</td></tr><tr><td>Projects</td><td>Touched in the last 7 days (see Projects above)</td></tr><tr><td>Checklists</td><td>Changed in the last 7 days</td></tr><tr><td>Documents and artifacts</td><td>Updated or added in the last 7 days</td></tr><tr><td>Scripts</td><td>File changed in the last 7 days</td></tr><tr><td>Claude chats</td><td>Last message in the last 7 days</td></tr><tr><td>Weekly reviews</td><td>The newest one</td></tr><tr><td>Needs attention</td><td>Always shown</td></tr></tbody></table>
+<h2 id="search-and-filters">Search and filters</h2>
+<p>The search box filters every panel as you type: tasks, projects, notes, checklists and their items, attention items, links, scripts, chats and reviews. Filters you set (focus, overdue, a day, active projects, today only, search) appear as chips under the header. Click the <strong>×</strong> on a chip to remove it, <strong>Clear all</strong>, or press <strong>Esc</strong>.</p>
+<h2 id="launcher-tab">Launcher tab</h2>
+<p>The Launcher lists the apps you have built, each with a status and buttons.</p>
+<ul><li><strong>Running / Stopped:</strong> shown for apps with a web address on this PC. Apps without one show <strong>No status</strong> (for example tray apps).</li><li><strong>Start</strong> runs the app's start script.</li><li><strong>Start and open</strong> runs it, waits until it is up (up to about 30 seconds), then opens its address in your default browser.</li><li><strong>Open</strong> appears when the app is running and opens its address.</li><li><strong>Show script</strong> opens Explorer on the start script. The script's output goes to <code>launchers\logs</code>.</li><li><strong>Add an app:</strong> use the form under the list: a name, an optional description, the start script (a path relative to the DeskBoard folder, or a full path), the address, and a project.</li></ul>
+<p>There is no Stop button. Close an app the usual way, or see <a href="03-setup-and-troubleshooting.html">setup and troubleshooting</a>.</p>
+<p>Below the apps, <strong>Made in Claude</strong> lists your artifacts and documents. Add more on the Board tab.</p>
+<h2 id="ai-buttons">AI buttons</h2>
+<p>Click <strong>Connect AI</strong> and pick a provider (setup steps are in <a href="03-setup-and-troubleshooting.html">setup and troubleshooting</a>). Once it is connected, three buttons appear.</p>
+<table><thead><tr><th>Button</th><th>What it does</th><th>What it sends</th></tr></thead><tbody><tr><td>What should I do first?</td><td>One sentence on the day and up to four next actions</td><td>Today's date, open tasks, open attention items, active projects with days since last touched, the 12 latest chat titles</td></tr><tr><td>Paste to tasks</td><td>Finds tasks in pasted text; you tick the ones to add</td><td>The pasted text (up to 20,000 characters), today's date, project names</td></tr><tr><td>Weekly review</td><td>Writes and saves a review of the last 7 days</td><td>Tasks done and overdue, attention titles, projects, chat titles and script names from this week</td></tr></tbody></table>
+<p>Chat titles are sent, never chat content. If the provider is Claude Desktop, requests wait for a Claude session to answer them (see <a href="05-using-desk-board-with-claude.html">using Desk Board with Claude</a>).</p>
+<h2 id="keyboard-shortcuts">Keyboard shortcuts</h2>
+<table><thead><tr><th>Key</th><th>Action</th></tr></thead><tbody><tr><td><code>/</code></td><td>Go to the search box</td></tr><tr><td><code>N</code></td><td>Go to the new task box</td></tr><tr><td><code>T</code></td><td>Toggle Today only</td></tr><tr><td><code>Esc</code></td><td>Clear filters and search</td></tr><tr><td>Enter (in an Add item box)</td><td>Add the checklist item</td></tr></tbody></table>
+<p>The shortcuts work when you are not typing in a box and no dialog is open. <code>N</code> and <code>T</code> apply on the Board tab.</p>
+<h2 id="tips">Tips</h2>
+<ul><li>Back up <code>data.json</code> now and then. It is the whole board.</li><li>Give each active project a next action. The AI buttons work only from what is on the board, so a next action gives them something to go on.</li><li>Put start scripts for anything you build in <code>launchers\</code> so it shows up in the Launcher.</li><li>To get a list from a chat onto the board, ask Claude to add it as a checklist on the project.</li></ul>
+</main><footer>Desk Board documentation. Source: the Markdown files in the docs folder; rebuild with node docs\build-docs.js.</footer></body></html>

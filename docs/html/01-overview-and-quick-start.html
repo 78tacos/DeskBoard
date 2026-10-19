@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Desk Board: overview and quick start</title><style>
+  :root { color-scheme: light; }
+  body { margin: 0; background: #ffffff; color: #1b1b1b; font: 15px/1.55 "Segoe UI", Calibri, Arial, sans-serif; }
+  main, nav, footer { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  nav { padding-top: 14px; padding-bottom: 10px; font-size: 13px; border-bottom: 1px solid #d0d0d0; }
+  nav a { margin-right: 14px; }
+  main { padding-top: 10px; padding-bottom: 40px; }
+  h1 { font-size: 26px; margin: 22px 0 8px; }
+  h2 { font-size: 20px; margin: 28px 0 8px; }
+  h3 { font-size: 16px; margin: 20px 0 6px; }
+  p, ul, ol, table, pre { margin: 0 0 12px; }
+  li { margin: 2px 0; }
+  a { color: #0b5cad; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; background: #f1f1f1; padding: 1px 4px; border-radius: 3px; }
+  pre { background: #f6f6f6; border: 1px solid #dcdcdc; border-radius: 4px; padding: 10px 12px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border: 1px solid #c4c4c4; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #efefef; }
+  hr { border: 0; border-top: 1px solid #d0d0d0; margin: 24px 0; }
+  footer { color: #666; font-size: 12px; padding-bottom: 24px; }
+  section.article { page-break-before: always; }
+  section.article:first-of-type { page-break-before: auto; }
+  @media print { nav { display: none; } }
+</style></head><body><nav><a href="index.html">All articles</a><strong>overview and quick start</strong> <a href="02-user-guide.html">user guide</a><a href="03-setup-and-troubleshooting.html">setup, operation and troubleshooting</a><a href="04-reference.html">reference</a><a href="05-using-desk-board-with-claude.html">Using Desk Board with Claude</a><a href="all.html">Everything on one page</a></nav><main>
+<h1 id="desk-board-overview-and-quick-start">Desk Board: overview and quick start</h1>
+<p>Last updated 2026-10-15. Folder: <code>%USERPROFILE%\Development\DeskBoard</code>. Address: http://127.0.0.1:4173</p>
+<h2 id="what-it-is">What it is</h2>
+<p>Desk Board is a personal dashboard that runs on this PC and opens in its own window. It keeps the things that need attention in one place:</p>
+<ul><li>tasks, with due dates, priorities and repeats</li><li>projects, each with a status, a next action, notes and checklists</li><li>things that need attention</li><li>documents and artifacts made in Claude</li><li>scripts found on this PC, including the ones Claude wrote</li><li>Claude chats, matched to projects</li><li>weekly reviews</li><li>a Launcher tab that starts the apps built in Claude</li></ul>
+<p>By default every panel shows only what was worked on in the last 7 days. Older items are one click away. Optional AI buttons can suggest what to do first, turn pasted text into tasks, and write a weekly review.</p>
+<p>It is a small Node.js program with no installs and no cloud service. The board is stored in one file, <code>data.json</code>, next to the program. Nothing leaves this PC unless an AI provider is connected and an AI button is clicked.</p>
+<h2 id="why-it-runs-locally">Why it runs locally</h2>
+<p>The first version was a claude.ai artifact. Artifacts load from <code>*.claudeusercontent.com</code>. The network firewall (a FortiGate) inspects HTTPS to that domain and replaces its certificate, so the page stayed blank. A local program avoids that problem and can also do things a web page cannot: read project folders and Claude chat history, open folders, and start apps.</p>
+<h2 id="quick-start">Quick start</h2>
+<ol><li>Double-click <strong>Desk Board</strong> on the desktop. It starts the server with no console window and opens the board in its own window. The first open takes a few seconds.</li><li>Add a task: press <strong>N</strong> (or click the Add a task box), type it, press Enter.</li><li>Click <strong>Focus</strong> on a project card to see only that project, including its checklists.</li><li>Open the <strong>Launcher</strong> tab to start the apps you have built.</li><li>Optional: click <strong>Connect AI</strong> to turn on the AI buttons (see <a href="02-user-guide.html">the user guide</a>).</li></ol>
+<p>Other ways to start it:</p>
+<ul><li>Run <code>start.cmd</code> in the DeskBoard folder.</li><li>Open http://127.0.0.1:4173 in any browser while the server is running.</li></ul>
+<p>Closing the window does not stop the server. It keeps running in the background and uses very little. To stop it, see <a href="03-setup-and-troubleshooting.html">setup and troubleshooting</a>.</p>
+<h2 id="what-is-on-the-board-tab">What is on the Board tab</h2>
+<table><thead><tr><th>Panel</th><th>What it shows</th><th>Where the data comes from</th></tr></thead><tbody><tr><td>Summary strip</td><td>Open tasks, overdue, active projects, needs attention, done in the last 7 days</td><td>Calculated from your data</td></tr><tr><td>Week strip</td><td>Tasks due today and over the next 6 days, plus overdue</td><td>Tasks</td></tr><tr><td>Focus panel</td><td>One project: its checklists, next action, counts, folder buttons</td><td>Projects, checklists, tasks, chats, scripts</td></tr><tr><td>Tasks</td><td>Open tasks grouped by Overdue, Today, Upcoming, No date</td><td>You add them (or Claude does)</td></tr><tr><td>Projects</td><td>One card per project with status, next action, progress, notes</td><td>You add them</td></tr><tr><td>Needs attention</td><td>Things waiting on you, high priority first</td><td>You add them (or Claude does)</td></tr><tr><td>Documents and artifacts</td><td>Links to things you made in Claude or elsewhere</td><td>You add them (or Claude does)</td></tr><tr><td>Weekly reviews</td><td>AI-written summaries, newest first</td><td>Weekly review button</td></tr><tr><td>Checklists</td><td>Lists of steps per project</td><td>You add them (or Claude does)</td></tr><tr><td>Scripts</td><td>Script files found on this PC, newest first</td><td>Scanned automatically</td></tr><tr><td>Claude chats</td><td>Claude Desktop and Claude Code conversations</td><td>Scanned automatically</td></tr></tbody></table>
+<h2 id="what-you-need">What you need</h2>
+<ul><li>Windows 11 and Microsoft Edge.</li><li>Node.js (version 22 is installed here). Nothing else to install for the board itself.</li><li>Optional: VS Code (for the <strong>VS Code</strong> button), and whatever each app in the Launcher needs (for example <code>uv</code> for Sorto Studio, the .NET SDK for Wartburg and WGUpdater, <code>npm</code> for the LFND forms preview).</li></ul>
+<h2 id="where-things-are">Where things are</h2>
+<p>Everything is in <code>%USERPROFILE%\Development\DeskBoard</code>. The important files:</p>
+<ul><li><code>data.json</code> is your board. Back this up.</li><li><code>config.json</code> holds the AI connection, including any API key. Do not share it.</li><li><code>docs\</code> is this documentation.</li></ul>
+<p>The full list is in <a href="04-reference.html">the reference</a>.</p>
+<h2 id="related-articles">Related articles</h2>
+<ul><li><a href="02-user-guide.html">User guide</a>: how to use every part of the board.</li><li><a href="03-setup-and-troubleshooting.html">Setup and troubleshooting</a>: install, start and stop, AI setup, backup, fixes.</li><li><a href="04-reference.html">Reference</a>: files, data format, local API, security, limits.</li><li><a href="05-using-desk-board-with-claude.html">Using Desk Board with Claude</a>: how Claude sessions read and update the board and answer the AI buttons.</li></ul>
+</main><footer>Desk Board documentation. Source: the Markdown files in the docs folder; rebuild with node docs\build-docs.js.</footer></body></html>

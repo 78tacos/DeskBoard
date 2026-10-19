@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Desk Board documentation</title><style>
+  :root { color-scheme: light; }
+  body { margin: 0; background: #ffffff; color: #1b1b1b; font: 15px/1.55 "Segoe UI", Calibri, Arial, sans-serif; }
+  main, nav, footer { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  nav { padding-top: 14px; padding-bottom: 10px; font-size: 13px; border-bottom: 1px solid #d0d0d0; }
+  nav a { margin-right: 14px; }
+  main { padding-top: 10px; padding-bottom: 40px; }
+  h1 { font-size: 26px; margin: 22px 0 8px; }
+  h2 { font-size: 20px; margin: 28px 0 8px; }
+  h3 { font-size: 16px; margin: 20px 0 6px; }
+  p, ul, ol, table, pre { margin: 0 0 12px; }
+  li { margin: 2px 0; }
+  a { color: #0b5cad; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; background: #f1f1f1; padding: 1px 4px; border-radius: 3px; }
+  pre { background: #f6f6f6; border: 1px solid #dcdcdc; border-radius: 4px; padding: 10px 12px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border: 1px solid #c4c4c4; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #efefef; }
+  hr { border: 0; border-top: 1px solid #d0d0d0; margin: 24px 0; }
+  footer { color: #666; font-size: 12px; padding-bottom: 24px; }
+  section.article { page-break-before: always; }
+  section.article:first-of-type { page-break-before: auto; }
+  @media print { nav { display: none; } }
+</style></head><body><nav><a href="all.html">Everything on one page</a></nav><main>
+<h1>Desk Board documentation</h1>
+<p>Pick an article, or open everything on one page.</p>
+<ul><li><a href="01-overview-and-quick-start.html">Desk Board: overview and quick start</a>. What Desk Board is, how to start it, and a map of the board.</li><li><a href="02-user-guide.html">Desk Board: user guide</a>. How to use every part of the board.</li><li><a href="03-setup-and-troubleshooting.html">Desk Board: setup, operation and troubleshooting</a>. Install, start and stop, AI setup, backup, and fixes.</li><li><a href="04-reference.html">Desk Board: reference</a>. Files, data format, settings, local API, security and limits.</li><li><a href="05-using-desk-board-with-claude.html">Using Desk Board with Claude</a>. How Claude sessions read and update the board and answer the AI buttons.</li><li><a href="all.html">Everything on one page</a>. Best for copying into OneNote.</li></ul>
+<h2>Copying into OneNote or Wartburg</h2>
+<p>Open an article, press Ctrl+A, then Ctrl+C, and paste into a OneNote page or the Wartburg editor. Headings, lists, tables and code blocks come across. The Markdown files in the docs folder are the source: edit those, then run <code>node docs\build-docs.js</code> to rebuild these pages.</p>
+</main><footer>Desk Board documentation. Source: the Markdown files in the docs folder; rebuild with node docs\build-docs.js.</footer></body></html>

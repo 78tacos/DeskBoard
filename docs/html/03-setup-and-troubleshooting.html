@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Desk Board: setup, operation and troubleshooting</title><style>
+  :root { color-scheme: light; }
+  body { margin: 0; background: #ffffff; color: #1b1b1b; font: 15px/1.55 "Segoe UI", Calibri, Arial, sans-serif; }
+  main, nav, footer { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  nav { padding-top: 14px; padding-bottom: 10px; font-size: 13px; border-bottom: 1px solid #d0d0d0; }
+  nav a { margin-right: 14px; }
+  main { padding-top: 10px; padding-bottom: 40px; }
+  h1 { font-size: 26px; margin: 22px 0 8px; }
+  h2 { font-size: 20px; margin: 28px 0 8px; }
+  h3 { font-size: 16px; margin: 20px 0 6px; }
+  p, ul, ol, table, pre { margin: 0 0 12px; }
+  li { margin: 2px 0; }
+  a { color: #0b5cad; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; background: #f1f1f1; padding: 1px 4px; border-radius: 3px; }
+  pre { background: #f6f6f6; border: 1px solid #dcdcdc; border-radius: 4px; padding: 10px 12px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border: 1px solid #c4c4c4; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #efefef; }
+  hr { border: 0; border-top: 1px solid #d0d0d0; margin: 24px 0; }
+  footer { color: #666; font-size: 12px; padding-bottom: 24px; }
+  section.article { page-break-before: always; }
+  section.article:first-of-type { page-break-before: auto; }
+  @media print { nav { display: none; } }
+</style></head><body><nav><a href="index.html">All articles</a><a href="01-overview-and-quick-start.html">overview and quick start</a><a href="02-user-guide.html">user guide</a><strong>setup, operation and troubleshooting</strong> <a href="04-reference.html">reference</a><a href="05-using-desk-board-with-claude.html">Using Desk Board with Claude</a><a href="all.html">Everything on one page</a></nav><main>
+<h1 id="desk-board-setup-operation-and-troubleshooting">Desk Board: setup, operation and troubleshooting</h1>
+<p>Last updated 2026-10-15. This is the runbook. For how to use the board, see <a href="02-user-guide.html">the user guide</a>.</p>
+<h2 id="requirements">Requirements</h2>
+<ul><li>Windows 11 and Microsoft Edge (Edge gives the app-style window; any browser works for the address).</li><li>Node.js 22 or later on the PATH. Check with <code>node --version</code>.</li><li>Nothing to install for Desk Board itself. It has no dependencies.</li></ul>
+<h2 id="setting-it-up-on-a-pc">Setting it up on a PC</h2>
+<ol><li>Get the program into <code>%USERPROFILE%\Development\DeskBoard</code>. Either clone the private repository (<code>gh repo clone LCMS-Foundation/DeskBoard "$env:USERPROFILE\Development\DeskBoard"</code>), or download the zip from the latest release, or copy the folder from another PC. Your board (<code>data.json</code>) and settings (<code>config.json</code>) are not in the repository; copy <code>data.json</code> across if you want the same board.</li><li>Run <code>start.cmd</code>. The server starts and the board opens.</li><li>Create the desktop shortcut (run this in PowerShell):</li></ol>
+<pre><code>$dir = "$env:USERPROFILE\Development\DeskBoard"
+$lnk = Join-Path ([Environment]::GetFolderPath("Desktop")) "Desk Board.lnk"
+$s = (New-Object -ComObject WScript.Shell).CreateShortcut($lnk)
+$s.TargetPath = "$env:WINDIR\System32\wscript.exe"
+$s.Arguments = '"' + "$dir\launch.vbs" + '"'
+$s.WorkingDirectory = $dir
+$s.IconLocation = "$dir\deskboard.ico,0"
+$s.WindowStyle = 7
+$s.Save()</code></pre>
+<ol><li>Optional: make the server start when you sign in to Windows by double-clicking <code>startup-install.cmd</code>. It adds one file, <code>DeskBoard-server.vbs</code>, to your Startup folder (<code>shell:startup</code>). Double-click <code>startup-remove.cmd</code> to undo it.</li></ol>
+<p>The shortcut runs <code>launch.vbs</code>. That starts the server with no console window, waits until it answers (up to 15 seconds), then opens the board in an Edge app window. If Edge cannot be started it opens your default browser.</p>
+<h2 id="starting-stopping-and-restarting">Starting, stopping and restarting</h2>
+<table><thead><tr><th>Task</th><th>How</th></tr></thead><tbody><tr><td>Start</td><td>Double-click the <strong>Desk Board</strong> shortcut, or run <code>start.cmd</code></td></tr><tr><td>Check it is running</td><td><code>Get-NetTCPConnection -LocalPort 4173 -State Listen</code> (a row means yes), or open http://127.0.0.1:4173</td></tr><tr><td>Stop the server</td><td>Run the command below</td></tr><tr><td>Restart</td><td>Stop it, then start it again</td></tr></tbody></table>
+<p>Stop the server:</p>
+<pre><code>Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where-Object { $_.CommandLine -like "*server.js*" } | ForEach-Object { Stop-Process -Id $_.ProcessId }</code></pre>
+<p>Closing the board window does not stop the server. If you start the server while it is already running, the second copy exits quietly and nothing changes.</p>
+<p>When files change:</p>
+<ul><li><code>index.html</code> (the page) is read on every load. Reload the window; no restart needed.</li><li><code>server.js</code>, <code>store.js</code>, <code>collector.js</code> and <code>mcp-server.js</code> need a restart (and, for <code>mcp-server.js</code>, a new Claude session).</li></ul>
+<p>To use a different port, set the <code>DESKBOARD_PORT</code> environment variable before starting the server. The shortcut, <code>start.cmd</code> and <code>launch.vbs</code> assume 4173, so edit them too.</p>
+<h2 id="connecting-an-ai">Connecting an AI</h2>
+<p>Click <strong>Connect AI</strong>, choose a provider, and click <strong>Save and test</strong>. Once it passes, the AI buttons appear. <strong>Disconnect</strong> removes the connection and any saved key.</p>
+<table><thead><tr><th>Provider</th><th>What you need</th><th>Notes</th></tr></thead><tbody><tr><td>Claude Desktop (a session answers)</td><td>Nothing</td><td>Requests wait until a Claude session in the DeskBoard folder answers them. See <a href="05-using-desk-board-with-claude.html">using Desk Board with Claude</a>.</td></tr><tr><td>Claude Code on this PC</td><td>One-time sign-in</td><td>Run the sign-in command shown in the dialog once, in a terminal. It runs Claude Code in the background with no tools.</td></tr><tr><td>OpenAI, Ollama, LM Studio, OpenRouter, Google Gemini, Mistral, Groq, or any OpenAI-compatible service</td><td>Base URL, model name, API key (local models need no key)</td><td>The preset fills the base URL. Type the model name your provider uses.</td></tr><tr><td>Anthropic API</td><td>API key</td><td>Base URL <code>https://api.anthropic.com</code>. The preset suggests <code>claude-opus-5-5</code>; change it if you prefer another model.</td></tr></tbody></table>
+<p>The API key is saved in <code>config.json</code> and is never sent to the page. Optional hand edits in <code>config.json</code>:</p>
+<ul><li><code>"ai": { "apiKeyEnv": "NAME" }</code> reads the key from an environment variable instead.</li><li><code>"ai": { "authHeader": "api-key" }</code> sends the key in a header of that name instead of <code>Authorization: Bearer</code>.</li><li><code>"ai": { "headers": { "name": "value" } }</code> adds extra headers.</li><li><code>"ai": { "query": "api-version=2024-10-21" }</code> adds a query string (for Azure-style services).</li></ul>
+<h3 id="if-the-network-inspects-https">If the network inspects HTTPS</h3>
+<p>A firewall that replaces certificates stops the server reaching cloud AI providers. The test fails with "Certificate not trusted". Save the firewall's CA certificate (PEM format) as <code>ca.pem</code> in the DeskBoard folder and restart the server. <code>start-server.cmd</code> picks it up automatically. Local models are not affected.</p>
+<h2 id="where-scripts-and-chats-are-collected-from">Where scripts and chats are collected from</h2>
+<p>Every 5 minutes (and when you click <strong>Rescan</strong>) the server scans for scripts and Claude chats.</p>
+<ul><li><strong>Script folders:</strong> <code>%USERPROFILE%\Development</code>, every project folder on the board, and every folder a Claude chat ran in. It skips <code>node_modules</code>, <code>.git</code>, <code>venv</code>, <code>dist</code>, <code>build</code>, <code>.claude</code> and similar. It stops at 4,000 files or 6 folders deep.</li><li><strong>Script types:</strong> <code>.ps1</code>, <code>.psm1</code>, <code>.py</code>, <code>.bat</code>, <code>.cmd</code>, <code>.sh</code>, <code>.vbs</code>.</li><li><strong>Chats:</strong> the transcripts Claude Desktop and Claude Code keep in <code>%USERPROFILE%\.claude\projects</code>.</li></ul>
+<p>To change the folders or file types, add this to <code>config.json</code> (relative folders are relative to your user folder):</p>
+<pre><code>{
+  "collect": {
+    "scriptRoots": ["Development", "C:\\Scripts"],
+    "extensions": [".ps1", ".py", ".bat"]
+  }
+}</code></pre>
+<h2 id="backup-and-restore">Backup and restore</h2>
+<p><code>data.json</code> is the whole board. The server protects it automatically:</p>
+<ul><li>Before the first change each day it copies the board to <code>backups\data-YYYY-MM-DD.json</code>. The last 14 days are kept.</li><li>If <code>data.json</code> is ever unreadable (for example a hand edit left a typo), the damaged file is saved as <code>backups\data-unreadable-&lt;date-time&gt;.json</code> before anything overwrites it.</li></ul>
+<p>To restore: close the board window, stop the server, copy the backup you want over <code>data.json</code>, then start the server again.</p>
+<p>Also worth keeping a copy of: <code>config.json</code> (AI connection, contains any key), <code>launchers\</code> (start scripts) and <code>docs\</code>. <code>collected.json</code> and <code>requests.json</code> are rebuilt automatically.</p>
+<p>If you hand-edit <code>data.json</code>, stop the server first and keep the file valid JSON. A typo makes the board look empty, and the next change you make saves over the file (your old copy is kept in <code>backups\</code>).</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table><thead><tr><th>What you see</th><th>Likely cause</th><th>What to do</th></tr></thead><tbody><tr><td>"Waiting for the Desk Board server…" and it stays</td><td>The server is not running, or another program is using port 4173</td><td>Run <code>start.cmd</code>. If it stays, check <code>node --version</code> and run <code>Get-NetTCPConnection -LocalPort 4173 -State Listen</code>. If another program owns the port, close it.</td></tr><tr><td>The shortcut does nothing</td><td><code>launch.vbs</code> or <code>start-server.cmd</code> is missing or moved</td><td>Check both are in the DeskBoard folder. Recreate the shortcut with the script above.</td></tr><tr><td>Opens in a normal browser tab, not an app window</td><td>Edge could not be started</td><td>Harmless. Use the browser tab, or fix Edge.</td></tr><tr><td>"The board changed elsewhere, so it was reloaded"</td><td>Two things saved at once (a second window, or Claude)</td><td>Your last change was dropped. Do it again.</td></tr><tr><td>A change Claude made does not show up</td><td>The page waits while you are typing in a box, or the server is stopped</td><td>Click outside the box and wait a few seconds. Check the server is running.</td></tr><tr><td>The board is empty after a restart</td><td><code>data.json</code> was damaged or replaced</td><td>Restore the newest file in <code>backups\</code>.</td></tr><tr><td>AI buttons are missing</td><td>No AI is connected, or the test has not passed</td><td>Click <strong>Connect AI</strong>. It says <strong>Finish AI setup</strong> if setup is incomplete.</td></tr><tr><td>AI test fails with "Certificate not trusted"</td><td>The firewall inspects HTTPS</td><td>Add <code>ca.pem</code> as described above.</td></tr><tr><td>AI test fails with "rejected the API key"</td><td>Wrong or expired key</td><td>Paste the key again. A blank key box keeps the old key.</td></tr><tr><td>AI test fails with "doesn't know that model or URL"</td><td>Wrong model name or base URL</td><td>Check both with the provider.</td></tr><tr><td>"Claude Code on this PC isn't signed in"</td><td>The one-time sign-in was not done</td><td>Run the sign-in command shown in the dialog.</td></tr><tr><td>The AI button waits and waits</td><td>Provider is Claude Desktop and no session has answered</td><td>Open a Claude session in the DeskBoard folder and say "handle Desk Board requests". Requests expire after 15 minutes.</td></tr><tr><td>A script is not listed</td><td>It is outside the scanned folders, too deep, or the type is not scanned</td><td>Add its folder to <code>scriptRoots</code> and click <strong>Rescan</strong>.</td></tr><tr><td>A script shows Missing</td><td>The file was moved or deleted</td><td>Turn off <strong>Show missing</strong> to hide it.</td></tr><tr><td>A chat has no project</td><td>It ran with no folder, or in a folder that is not a project</td><td>Pick a project in its dropdown.</td></tr><tr><td><strong>Start</strong> in the Launcher does nothing or the app never turns Running</td><td>The start script failed</td><td>Open <code>launchers\logs\&lt;name&gt;.log</code>. Check the app's prerequisites (Wartburg needs PostgreSQL running; Sorto Studio needs <code>uv</code>).</td></tr><tr><td>"The start script wasn't found, or it isn't allowed"</td><td>Wrong path, or the file is not a <code>.cmd</code>, <code>.bat</code>, <code>.ps1</code>, <code>.vbs</code> or <code>.exe</code> inside your user folder</td><td>Fix the path in the app's entry.</td></tr><tr><td><strong>Open folder</strong> or <strong>VS Code</strong> says not found</td><td>The project folder is not set or does not exist, or VS Code is in an unusual place</td><td>Check the project's folder in <code>data.json</code>. VS Code is looked for in <code>%LOCALAPPDATA%\Programs\Microsoft VS Code</code> and <code>Program Files</code>.</td></tr><tr><td>The page looks plain or fonts differ</td><td>No internet for Google Fonts</td><td>Harmless. The page falls back to system fonts.</td></tr></tbody></table>
+<p>To stop an app started from the Launcher, close it normally. For a web app, find its process by port and stop it (change <code>8765</code> to the app's port):</p>
+<pre><code>Get-NetTCPConnection -LocalPort 8765 -State Listen | ForEach-Object { Stop-Process -Id $_.OwningProcess }</code></pre>
+<h2 id="removing-desk-board">Removing Desk Board</h2>
+<ol><li>Stop the server (command above).</li><li>Delete the <strong>Desk Board</strong> shortcut from the desktop.</li><li>Run <code>startup-remove.cmd</code> if you installed start at sign-in.</li><li>Delete the DeskBoard folder. Keep <code>data.json</code> first if you want the board.</li></ol>
+<p>Desk Board stores nothing elsewhere, except its window preferences (see <a href="04-reference.html">the reference</a>).</p>
+</main><footer>Desk Board documentation. Source: the Markdown files in the docs folder; rebuild with node docs\build-docs.js.</footer></body></html>

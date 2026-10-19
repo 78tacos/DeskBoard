@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Using Desk Board with Claude</title><style>
+  :root { color-scheme: light; }
+  body { margin: 0; background: #ffffff; color: #1b1b1b; font: 15px/1.55 "Segoe UI", Calibri, Arial, sans-serif; }
+  main, nav, footer { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  nav { padding-top: 14px; padding-bottom: 10px; font-size: 13px; border-bottom: 1px solid #d0d0d0; }
+  nav a { margin-right: 14px; }
+  main { padding-top: 10px; padding-bottom: 40px; }
+  h1 { font-size: 26px; margin: 22px 0 8px; }
+  h2 { font-size: 20px; margin: 28px 0 8px; }
+  h3 { font-size: 16px; margin: 20px 0 6px; }
+  p, ul, ol, table, pre { margin: 0 0 12px; }
+  li { margin: 2px 0; }
+  a { color: #0b5cad; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; background: #f1f1f1; padding: 1px 4px; border-radius: 3px; }
+  pre { background: #f6f6f6; border: 1px solid #dcdcdc; border-radius: 4px; padding: 10px 12px; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border: 1px solid #c4c4c4; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #efefef; }
+  hr { border: 0; border-top: 1px solid #d0d0d0; margin: 24px 0; }
+  footer { color: #666; font-size: 12px; padding-bottom: 24px; }
+  section.article { page-break-before: always; }
+  section.article:first-of-type { page-break-before: auto; }
+  @media print { nav { display: none; } }
+</style></head><body><nav><a href="index.html">All articles</a><a href="01-overview-and-quick-start.html">overview and quick start</a><a href="02-user-guide.html">user guide</a><a href="03-setup-and-troubleshooting.html">setup, operation and troubleshooting</a><a href="04-reference.html">reference</a><strong>Using Desk Board with Claude</strong> <a href="all.html">Everything on one page</a></nav><main>
+<h1 id="using-desk-board-with-claude">Using Desk Board with Claude</h1>
+<p>Last updated 2026-10-15. Desk Board and Claude work together in four ways. This article covers what each does, how to set it up, and the rules Claude sessions follow.</p>
+<h2 id="the-four-ways-claude-is-involved">The four ways Claude is involved</h2>
+<table><thead><tr><th>What</th><th>How it works</th><th>Setup</th></tr></thead><tbody><tr><td>Claude sessions update the board</td><td>A session in the DeskBoard folder can read and change tasks, projects, checklists, links, attention items and apps through the <code>deskboard</code> tools</td><td>Approve the <code>deskboard</code> server when a session asks</td></tr><tr><td>Claude Desktop answers the AI buttons</td><td>The board queues each AI request and a Claude session answers it</td><td><strong>Connect AI</strong>, then choose Claude Desktop</td></tr><tr><td>Claude Code answers the AI buttons</td><td>The server runs Claude Code in the background, with no tools</td><td><strong>Connect AI</strong>, choose Claude Code, sign in once</td></tr><tr><td>Chats and scripts are collected</td><td>The board reads the chat history and the scripts Claude wrote on this PC</td><td>Nothing to set up</td></tr></tbody></table>
+<p>The first two work without an API key. Neither sends your board anywhere except through your own Claude sessions.</p>
+<h2 id="claude-sessions-updating-the-board">Claude sessions updating the board</h2>
+<p><code>.mcp.json</code> in the DeskBoard folder registers a small program, <code>mcp-server.js</code>, as an MCP server named <code>deskboard</code>. When you open a Claude session in the DeskBoard folder, it asks you to approve the server once. After that the session has these tools:</p>
+<table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody><tr><td><code>deskboard_get</code></td><td>Reads the board: open tasks, projects, open attention items, links, checklists, apps, counts of collected scripts and chats, and pending AI requests. Sessions call this first.</td></tr><tr><td><code>deskboard_add</code></td><td>Adds a task, project, attention item, link, checklist or app</td></tr><tr><td><code>deskboard_update</code></td><td>Changes fields on an item by id</td></tr><tr><td><code>deskboard_delete</code></td><td>Deletes an item by id. Sessions only do this when you ask.</td></tr><tr><td><code>deskboard_collected</code></td><td>Lists the collected scripts or chats</td></tr><tr><td><code>deskboard_requests</code></td><td>Lists AI requests waiting for an answer</td></tr><tr><td><code>deskboard_answer</code></td><td>Answers one request</td></tr></tbody></table>
+<p>Things you can say in a session:</p>
+<ul><li>"Add a task to call the vendor on Friday, high priority."</li><li>"Put the steps from this chat on the Sorto project as a checklist."</li><li>"Register this app in the Launcher." (The session writes a start script in <code>launchers\</code> and adds the app.)</li><li>"Add the artifact you just made to Desk Board."</li></ul>
+<p>The board shows changes within a few seconds. Anything that touches an item should refresh its <code>updatedAt</code>, which keeps checklists, projects and links in the 7-day view.</p>
+<p>If the tools are not available in a session (for example the session started before the server was registered), Claude falls back to Node's <code>store.js</code>, which writes <code>data.json</code> the same way.</p>
+<h3 id="what-claude-sessions-are-told-to-do">What Claude sessions are told to do</h3>
+<p><code>CLAUDE.md</code> in the folder is read by every session in it. Its main rules:</p>
+<ul><li>Call <code>deskboard_get</code> first. Delete only when asked.</li><li>When a chat produces a list of steps or things to check for a project, add it as a checklist on that project and say so.</li><li>When something is built that the user runs locally, put a start script in <code>launchers\</code> (one command, output to <code>launchers\logs</code>, a <code>rem</code> line saying what it does) and register it as an app with its address.</li><li>Add artifacts and documents as links.</li><li>Add things the user must decide as needs-attention items with the source Claude.</li><li>Never read or print <code>config.json</code>, and never copy an API key anywhere.</li><li>Keep the server, collector and MCP server free of dependencies, and never expose the server beyond 127.0.0.1.</li></ul>
+<h2 id="claude-desktop-as-the-ai">Claude Desktop as the AI</h2>
+<p>Click <strong>Connect AI</strong>, choose <strong>Claude Desktop (a session answers)</strong>, and click <strong>Use Claude Desktop</strong>. No key and no test are needed.</p>
+<p>When you click an AI button the board shows "Waiting for Claude Desktop". To answer:</p>
+<ol><li>Open a Claude session in the DeskBoard folder.</li><li>Say <strong>handle Desk Board requests</strong>.</li><li>The session reads the waiting requests with <code>deskboard_requests</code>, writes each answer in the format the request asks for (plain text, or only a JSON list for Paste to tasks), and sends it with <code>deskboard_answer</code>.</li><li>The board shows the answer.</li></ol>
+<p>A request waits up to 15 minutes, then expires with a message. The <strong>Connect AI</strong> dialog shows when a session last used the board.</p>
+<p>This needs a Claude session to be open. If you want answers without one, use Claude Code or an API provider instead.</p>
+<h2 id="claude-code-as-the-ai">Claude Code as the AI</h2>
+<p>Choose <strong>Claude Code on this PC (needs one-time sign-in)</strong>. The server finds <code>claude.exe</code> in your Claude Desktop install (<code>%APPDATA%\Claude\claude-code</code>) and runs it in the background with no tools and no saved session. It uses your Claude plan.</p>
+<p>Claude Code has its own sign-in, separate from the desktop app. Run the sign-in command shown in the dialog once, in a terminal, then click <strong>Save and test</strong>. Until then the test says Claude Code is not signed in.</p>
+<h2 id="what-claude-can-see">What Claude can see</h2>
+<ul><li><strong>Chats:</strong> the chat history Claude Desktop and Claude Code keep on this PC. The board uses titles, a snippet of your last message, message counts and times. It does not copy chat content.</li><li><strong>Scripts:</strong> files on this PC, plus every script Claude wrote with its file tool in those chats.</li><li><strong>Not visible:</strong> claude.ai chats in a web browser, and anything stored only in Claude's cloud.</li></ul>
+<h2 id="sending-data-to-an-ai-provider">Sending data to an AI provider</h2>
+<p>Only the AI buttons send anything, and only to the provider you connected. The exact contents are listed in the AI buttons table in <a href="02-user-guide.html">the user guide</a>. With Claude Desktop, the content goes to your Claude session. With Claude Code or an API provider, it goes to that service.</p>
+<h2 id="related">Related</h2>
+<ul><li><a href="03-setup-and-troubleshooting.html">Setup and troubleshooting</a> for connection problems.</li><li><a href="04-reference.html">Reference</a> for the data format and the tool details.</li></ul>
+</main><footer>Desk Board documentation. Source: the Markdown files in the docs folder; rebuild with node docs\build-docs.js.</footer></body></html>
