@@ -2,6 +2,10 @@
 
 Versions are tagged in git (for example v1.0.0) and published as releases.
 
+## Unreleased
+
+- Fixed garbled text in the "Git and releases" section of `CLAUDE.md`.
+- Launch scripts for Ferry, Uproot, PrintDoctor, Windows Update Repair and the Sorto label sheets, so they can be started from the Launcher tab.
 ## 1.0.0 (2026-10-19)
 
 **First release: a local dashboard for tasks, projects, scripts, chats and the apps you build.**
